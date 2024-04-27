@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "dthymatters",
+    "slug": "dthymatters",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "scheme": "dthymatters",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "package":"com.damkam.dthymatters"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.damkam.dthymatters"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler":"metro"
+    },
+    "plugins": ["expo-router", "expo-font"]
+  }
+}
