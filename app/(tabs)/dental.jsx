@@ -1,10 +1,10 @@
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Image, FlatList, TouchableOpacity, Text, ScrollView } from "react-native";
+import { View, Image, FlatList, TouchableOpacity, Text, ScrollView, Alert } from "react-native";
 
 import { icons } from "../../constants";
 import useAppwrite from "../../lib/useAppwrite";
-import { getUserPosts, signOut } from "../../lib/appwrite";
+import { createCustomDentalPlan, getUserPosts, signOut } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { CustomButton, EmptyState, FormField, InfoBox, VideoCard } from "../../components";
 import { DentalHistoryFormField } from "../../components";
@@ -13,22 +13,55 @@ import { useState } from "react";
 
 const DentalHistory = () => {
 
-    const { setUser, setIsLogged, setNewUser, newUser } = useGlobalContext();
-
+    const { setUser, setIsLogged, setNewUser, newUser, user } = useGlobalContext();
+    const [isSubmitting, setSubmitting] = useState(false);
 
     const [form, setForm] = useState({
-        title: "",
-        age: null,
-        gender: null,
+        // title: "",
+        age: "",
         existingConditions: "",
         recentProcedures: "",
         hygieneFrequency: "",
         toothbrush: "",
         toothpaste: "",
-        dietaryHabits:"",
+        dietaryHabits: "",
         dentalAppliances_allergies: "",
+    });
 
-    })
+
+
+    const submit = async () => {
+        // Log form values for debugging
+        console.log("Form values:", form);
+
+
+        try {
+            for (const key in form) {
+                if (form[key].trim() === "") {
+                    Alert.alert("Error", "Please fill in all fields");
+
+                    setSubmitting(true)
+                    return;
+                }
+            }
+
+            await updateCustomDentalPlan({
+
+                ...form,
+                userId: user.$id
+            })
+        }
+        catch (error) {
+
+        }
+
+
+
+        setSubmitting(true);
+        router.replace("/home");
+    };
+
+
 
     return (
         <SafeAreaView className="bg-primary h-full">
@@ -49,8 +82,68 @@ const DentalHistory = () => {
                     otherStyles={"mt-10"}
                 />
 
-                <V
+                <DentalHistoryFormField
+                    title="Do you have any existing dental conditions or concerns?"
+                    value={form.existingConditions}
+                    placeholder={"Please describe and type here"}
+                    handleChangeText={(e) => setForm({ ...form, existingConditions: e })}
+                    otherStyles={"mt-10"}
+                />
 
+                <DentalHistoryFormField
+                    title="Did you have any recent dental procedures or discomfort?"
+                    value={form.recentProcedures}
+                    placeholder={"Please describe and type here"}
+                    handleChangeText={(e) => setForm({ ...form, recentProcedures: e })}
+                    otherStyles={"mt-10"}
+                />
+
+                <DentalHistoryFormField
+                    title="How often do you brush, floss, and use mouthwash?"
+                    value={form.hygieneFrequency}
+                    placeholder={"Please describe and type here"}
+                    handleChangeText={(e) => setForm({ ...form, hygieneFrequency: e })}
+                    otherStyles={"mt-10"}
+                />
+
+                <DentalHistoryFormField
+                    title="What type of toothbrush do you use?"
+                    value={form.toothbrush}
+                    placeholder={"Please describe and type here"}
+                    handleChangeText={(e) => setForm({ ...form, toothbrush: e })}
+                    otherStyles={"mt-10"}
+                />
+
+                <DentalHistoryFormField
+                    title="What type of toothpaste do you use?"
+                    value={form.toothpaste}
+                    placeholder={"Please describe and type here"}
+                    handleChangeText={(e) => setForm({ ...form, toothpaste: e })}
+                    otherStyles={"mt-10"}
+                />
+
+                <DentalHistoryFormField
+                    title="What dietary habits or health concerning conditions/habits do you have? (ex: sugary, acidic foods, smoking)"
+                    value={form.dietaryHabits}
+                    placeholder={"Please describe and type here"}
+                    handleChangeText={(e) => setForm({ ...form, dietaryHabits: e })}
+                    otherStyles={"mt-10"}
+                />
+
+                <DentalHistoryFormField
+                    title="What dental appliances or allergies do you have?"
+                    value={form.dentalAppliances_allergies}
+                    placeholder={"Please describe and type here"}
+                    handleChangeText={(e) => setForm({ ...form, dentalAppliances_allergies: e })}
+                    otherStyles={"mt-10"}
+                />
+
+                < CustomButton
+                    title="Save"
+                    handlePress={submit}
+                    containerStyles="mt-7"
+                    isLoading={isSubmitting}
+                />
 
             </ScrollView>
 
