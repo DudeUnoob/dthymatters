@@ -9,15 +9,7 @@ const DentalHistoryFormField = ({
   placeholder,
   handleChangeText,
   otherStyles,
-//   age,
-//   gender,
-//   existingConditions,
-//   recentProcedures,
-//   hygieneFrequency,
-//   toothbrush,
-//   toothpaste,
-//   dietaryHabits,
-//   dentalAppliances_allergies,
+  isNumericInput = false,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +25,7 @@ const DentalHistoryFormField = ({
           placeholder={placeholder}
           placeholderTextColor="#7B7B8B"
           onChangeText={handleChangeText}
+          keyboardType={isNumericInput ? "numeric" : "default"}
           {...props}
         />
       </View>
