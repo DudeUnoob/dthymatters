@@ -106,6 +106,21 @@ const TabLayout = () => {
             ),
           }}
         />
+
+        <Tabs.Screen 
+        name="dental"
+        options={{
+          title:"Dental History",
+          headerShown:false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon 
+            color={color}
+            name={"Dental History"}
+            focused={focused}
+            />
+          )
+        }}
+        />
       </Tabs>
 
       <Loader isLoading={loading} />

@@ -9,7 +9,7 @@ import { CustomButton, FormField } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp = () => {
-  const { setUser, setIsLogged } = useGlobalContext();
+  const { setUser, setIsLogged, setNewUser } = useGlobalContext();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -28,8 +28,10 @@ const SignUp = () => {
       const result = await createUser(form.email, form.password, form.username);
       setUser(result);
       setIsLogged(true);
+      setNewUser(true)
 
-      router.replace("/home");
+      // router.replace("/home");
+      router.replace('/dental')
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
