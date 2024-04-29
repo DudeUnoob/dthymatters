@@ -111,11 +111,11 @@ const Bookmark = () => {
   }
 
   return (
-    <SafeAreaView className="px-4 my-6 bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <ScrollView className="px-4 my-6">
         <Text className="text-2xl text-white font-psemibold">Bookmark</Text>
 
-        <View className="flex justify-center items-center px-4">
+        {/* <View className="flex justify-center items-center px-4"> */}
           <Text className="text-xl text-white font-psemibold mt-7" ref={ref}>
             {text}
 
@@ -128,7 +128,7 @@ const Bookmark = () => {
             textStyles={""}
             isLoading={isSubmitting}
           />
-        </View>
+        {/* </View> */}
       </ScrollView>
     </SafeAreaView>
   );
