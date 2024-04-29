@@ -49,7 +49,7 @@ const Welcome = () => {
           </View>
 
           <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-            Where Creativity Meets Innovation: Embark on a Journey of Limitless
+            Where Creativity Meets Innovation: Embark on a healthy Dental Journey of
             Exploration with dthymatters
           </Text>
 
