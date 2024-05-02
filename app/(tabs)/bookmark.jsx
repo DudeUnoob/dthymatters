@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { API_KEY } from "@env"
@@ -10,6 +10,27 @@ import { CustomButton, Loader } from "../../components";
 import Markdown from "react-native-markdown-display";
 
 
+
+
+const styles = StyleSheet.create({
+  // heading1: {
+  //   fontSize: 32,
+  //   backgroundColor: '#000000',
+  //   color: '#FFFFFF',
+  // },
+  paragraph:{
+    fontSize:28,
+    color:"white",
+    fontWeight:"600"
+  },
+
+  list_item:{
+    fontSize:20,
+    color:"white",
+    fontWeight:"600"
+  }
+
+})
 
 const Bookmark = () => {
 
@@ -117,7 +138,10 @@ const Bookmark = () => {
 
         {/* <View className="flex justify-center items-center px-4"> */}
           <Text className="text-xl text-white font-psemibold mt-7" ref={ref}>
-            {text}
+          <Markdown style={styles}>
+          {text}
+          </Markdown>
+            
 
           </Text>
 
