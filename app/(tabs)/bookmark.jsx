@@ -18,16 +18,17 @@ const styles = StyleSheet.create({
   //   backgroundColor: '#000000',
   //   color: '#FFFFFF',
   // },
-  paragraph:{
-    fontSize:28,
-    color:"white",
-    fontWeight:"600"
+  paragraph: {
+    fontSize: 28,
+    color: "white",
+    fontWeight: "600"
   },
 
-  list_item:{
-    fontSize:20,
-    color:"white",
-    fontWeight:"600"
+  list_item: {
+    fontSize: 20,
+    color: "white",
+    fontWeight: "600",
+
   }
 
 })
@@ -70,12 +71,12 @@ const Bookmark = () => {
   useEffect(() => {
 
 
-      getAiGeneratedPlan(user).then(res => {
-        setText(res.ai_generated_plan == "" ? null : res.ai_generated_plan)
-        setLoading(false)
-      })
+    getAiGeneratedPlan(user).then(res => {
+      setText(res.ai_generated_plan == "" ? null : res.ai_generated_plan)
+      setLoading(false)
+    })
 
-   
+
 
 
   }, [user])
@@ -120,31 +121,34 @@ const Bookmark = () => {
     await updateAiGeneratedPlan(user, text)
   }
 
-  if(isLoading) {
+  if (isLoading) {
     return (
       <SafeAreaView className="bg-primary h-full">
         <ScrollView className="px-4 my-6">
           <Text className="text-2xl text-white font-psemibold">Loading...</Text>
-          <Loader isLoading={isLoading}/>
+          <Loader isLoading={isLoading} />
         </ScrollView>
       </SafeAreaView>
     )
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <ScrollView className="px-4 my-6">
-        <Text className="text-2xl text-white font-psemibold">Bookmark</Text>
+    <>
+      <SafeAreaView className="bg-primary h-full">
+        <ScrollView className="px-4 my-6">
+          <Text className="text-2xl text-white font-psemibold">Bookmark</Text>
 
-        {/* <View className="flex justify-center items-center px-4"> */}
-          <Text className="text-xl text-white font-psemibold mt-7" ref={ref}>
-          <Markdown style={styles}>
-          {text}
-          </Markdown>
-            
+          {/* <View className="flex justify-center items-center px-4"> */}
+          <View style={{ flex: 1 }}>
+            <ScrollView>
+              <Markdown style={styles}>
+                {text}
+              </Markdown>
+            </ScrollView>
+          </View>
 
-          </Text>
 
+          {/* </View> */}
           <CustomButton
             title={"Create AI Generated Dental Plan from your Dental History"}
             handlePress={handleSubmit}
@@ -152,9 +156,11 @@ const Bookmark = () => {
             textStyles={""}
             isLoading={isSubmitting}
           />
-        {/* </View> */}
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+
+      </SafeAreaView>
+
+    </>
   );
 };
 
