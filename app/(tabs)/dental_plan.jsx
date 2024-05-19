@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 
 })
 
-const Bookmark = () => {
+const dental_plan = () => {
 
   const { user } = useGlobalContext();
 
@@ -47,6 +47,13 @@ const Bookmark = () => {
   const genAI = new GoogleGenerativeAI(API_KEY);
 
   const model = genAI.getGenerativeModel({ model: "gemini-pro" })
+
+  const scrollViewRef = useRef(null);
+
+  const handleScrollToEnd = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  };
+
 
   useEffect(() => {
     async function run() {
@@ -135,8 +142,8 @@ const Bookmark = () => {
   return (
     <>
       <SafeAreaView className="bg-primary h-full">
-        <ScrollView className="px-4 my-6">
-          <Text className="text-2xl text-white font-psemibold">Bookmark</Text>
+        <ScrollView className="px-4 my-6" ref={scrollViewRef}>
+          <Text className="text-2xl text-white font-psemibold underline">Custom Dental Plan</Text>
 
           {/* <View className="flex justify-center items-center px-4"> */}
           <View style={{ flex: 1 }}>
@@ -156,7 +163,17 @@ const Bookmark = () => {
             textStyles={""}
             isLoading={isSubmitting}
           />
+          
         </ScrollView>
+        {text && (
+          <CustomButton 
+          title="Scroll to Bottom"
+          containerStyles="mt-7 p-5 w-2/3 mx-auto px-auto"
+          textStyles={""}
+          handlePress={handleScrollToEnd}
+          
+          />
+        )}
 
       </SafeAreaView>
 
@@ -164,4 +181,4 @@ const Bookmark = () => {
   );
 };
 
-export default Bookmark;
+export default dental_plan;
