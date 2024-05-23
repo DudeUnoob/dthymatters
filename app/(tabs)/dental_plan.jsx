@@ -9,51 +9,61 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { CustomButton, Loader } from "../../components";
 import Markdown from "react-native-markdown-display";
 
-
-
-
 const styles = StyleSheet.create({
-  // heading1: {
-  //   fontSize: 32,
-  //   backgroundColor: '#000000',
-  //   color: '#FFFFFF',
-  // },
   paragraph: {
     fontSize: 28,
     color: "white",
     fontWeight: "600"
   },
-
   list_item: {
     fontSize: 20,
     color: "white",
     fontWeight: "600",
-
   }
-
 })
 
 const dental_plan = () => {
-
   const { user } = useGlobalContext();
-
 
   const ref = useRef(null)
   const [isSubmitting, setSubmitting] = useState(false);
   const [isLoading, setLoading] = useState(true)
-
   const [text, setText] = useState(null)
 
   const genAI = new GoogleGenerativeAI(API_KEY);
-
   const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
   const scrollViewRef = useRef(null);
 
-  const handleScrollToEnd = () => {
+  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  const handleScroll = (event) => {
+    const scrollHeight = event.nativeEvent.contentSize.height;
+    const scrollOffset = event.nativeEvent.contentOffset.y;
+    const contentHeight = scrollHeight - event.nativeEvent.layoutMeasurement.height;
+
+    if (scrollOffset >= contentHeight - 5) {
+      setIsAtBottom(true);
+    } else {
+      setIsAtBottom(false);
+    }
+  };
+
+  const handleScrollToTop = () => {
+    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+  };
+
+  const handleScrollToBottom = () => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
+  const handleScrollToggle = () => {
+    if (isAtBottom) {
+      handleScrollToTop();
+    } else {
+      handleScrollToBottom();
+    }
+  };
 
   useEffect(() => {
     async function run() {
@@ -76,18 +86,11 @@ const dental_plan = () => {
   }, []); // Empty dependency array ensures it runs only once
 
   useEffect(() => {
-
-
     getAiGeneratedPlan(user).then(res => {
       setText(res.ai_generated_plan == "" ? null : res.ai_generated_plan)
       setLoading(false)
     })
-
-
-
-
   }, [user])
-
 
   const handleSubmit = async () => {
     setSubmitting(true)
@@ -121,7 +124,6 @@ const dental_plan = () => {
     const text = response.text();
     console.log(text);
 
-
     setText(text)
     setSubmitting(false)
 
@@ -142,10 +144,14 @@ const dental_plan = () => {
   return (
     <>
       <SafeAreaView className="bg-primary h-full">
-        <ScrollView className="px-4 my-6" ref={scrollViewRef}>
+        <ScrollView
+          className="px-4 my-6"
+          ref={scrollViewRef}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+        >
           <Text className="text-2xl text-white font-psemibold underline">Custom Dental Plan</Text>
 
-          {/* <View className="flex justify-center items-center px-4"> */}
           <View style={{ flex: 1 }}>
             <ScrollView>
               <Markdown style={styles}>
@@ -154,8 +160,6 @@ const dental_plan = () => {
             </ScrollView>
           </View>
 
-
-          {/* </View> */}
           <CustomButton
             title={"Create AI Generated Dental Plan from your Dental History"}
             handlePress={handleSubmit}
@@ -163,20 +167,16 @@ const dental_plan = () => {
             textStyles={""}
             isLoading={isSubmitting}
           />
-          
         </ScrollView>
         {text && (
-          <CustomButton 
-          title="Scroll to Bottom"
-          containerStyles="mt-7 p-5 w-2/3 mx-auto px-auto"
-          textStyles={""}
-          handlePress={handleScrollToEnd}
-          
+          <CustomButton
+            title={isAtBottom ? "Scroll to Top" : "Scroll to Bottom"}
+            containerStyles="mt-7 p-5 w-2/3 mx-auto px-auto"
+            textStyles={""}
+            handlePress={handleScrollToggle}
           />
         )}
-
       </SafeAreaView>
-
     </>
   );
 };
